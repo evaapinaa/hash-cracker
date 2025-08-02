@@ -1,4 +1,6 @@
 import hashlib
+import string
+import time
 
 palabras = []
 
@@ -46,38 +48,42 @@ def generarCombinaciones(letras, longitud, actual=""):
     
 # Probar todas las combinaciones posibles
 def fuerzaBruta(longitud, hashObjetivo):
-    
-    letras = "abcdefghijklmnñopqrstuvwxyz0123456789"
-    
+    letras = string.printable.strip()
     longitud = int(longitud)
+    tiempoInicio = time.time()
     
     for i in range(1, longitud + 1):
         
         for combinacion in generarCombinaciones(letras, i):
             hashCombinacion = generarHashMD5(combinacion)
             
-            print(f"Probando {combinacion}")
+            print(f"Probando: {combinacion}")
             
             if hashCombinacion == hashObjetivo:
                 print("----Hash encontrado!!----")
                 print(f"Palabra: {combinacion}")
-                print(f"Hash: {hashCombinacion}\n")
+                print(f"Hash: {hashCombinacion}")
+                print(f"Tiempo: {time.time() - tiempoInicio}\n")
                 return combinacion
-                
+    
+    print("No se ha encontrado\n")          
     return None
 
 # Hacer hash de cada palabra, y las comparas
 def ataqueDiccionario(hashObjetivo):
     palabras = cargarDiccionario()
+    tiempoInicio = time.time()
     for palabra in palabras:
         hashPalabra = generarHashMD5(palabra)
         
         if hashPalabra == hashObjetivo:
             print("----Hash encontrado!!----")
             print(f"Palabra: {palabra}")
-            print(f"Hash: {hashPalabra}\n")
+            print(f"Hash: {hashPalabra}")
+            print(f"Tiempo: {time.time() - tiempoInicio}\n")
             return palabra
-        
+    
+    print("No se ha encontrado en el diccionario\n")
     return None
 
 
